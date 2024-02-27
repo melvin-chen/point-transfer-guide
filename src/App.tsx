@@ -92,7 +92,7 @@ export default function App() {
         selectedAirline && "overflow-hidden"
       )}
     >
-      <h1 className="text-3xl mb-4 font-bold">Transfer Point Matrix</h1>
+      <h1 className="text-3xl mb-4 font-bold">Point Transfer Guide</h1>
       <div className="relative w-full">
         <input
           className="w-full border rounded-lg p-3 peer dark:bg-slate-900"
@@ -236,7 +236,7 @@ export default function App() {
                           ? transfer === bank
                           : transfer.bank === bank
                       ) && getBankTransferBgColor(bank as Bank),
-                      "inline-block w-16 rounded"
+                      "inline-block w-16 rounded py-0.5"
                     )}
                   >
                     {getAirlineTransferRate({ airline, bank: bank as Bank })}
@@ -251,14 +251,14 @@ export default function App() {
       <div
         className={twJoin(
           "fixed w-full h-full top-0 left-0 flex justify-center transition-all overflow-hidden",
-          selectedAirline ? "opacity-1" : "opacity-0 pointer-events-none"
+          selectedAirline ? "" : "pointer-events-none"
         )}
       >
         <div
           onClick={() => setSelectedAirline(undefined)}
           className={twJoin(
             "fixed w-full h-full top-0 left-0 flex justify-center transition-all",
-            selectedAirline && "bg-black/40 opacity-1"
+            selectedAirline ? "bg-black/40 opacity-1" : "opacity-0"
           )}
         />
         {selectedAirline && (
@@ -294,7 +294,7 @@ export default function App() {
                           ? transfer === bank
                           : transfer.bank === bank
                       ) && getBankTransferBgColor(bank as Bank),
-                      "inline-block w-16 rounded text-center"
+                      "inline-block w-16 rounded text-center py-0.5"
                     )}
                   >
                     {getAirlineTransferRate({
@@ -312,7 +312,7 @@ export default function App() {
               ) : (
                 <>
                   <span className="text-lg font-semibold block my-4">
-                    Alliance Partners ({selectedAirline.alliance}):
+                    Alliance partners ({selectedAirline.alliance}):
                   </span>
                   {selectedAirlineAlliancePartnersWithTransferPartners?.map(
                     (airline, index) => (
@@ -329,7 +329,7 @@ export default function App() {
                                     ? transfer === bank
                                     : transfer.bank === bank
                                 ) && getBankTransferBgColor(bank as Bank),
-                                "inline-block w-16 rounded text-center"
+                                "inline-block w-16 rounded text-center py-0.5"
                               )}
                             >
                               {getAirlineTransferRate({
@@ -366,7 +366,7 @@ export default function App() {
                                   ? transfer === bank
                                   : transfer.bank === bank
                               ) && getBankTransferBgColor(bank as Bank),
-                              "inline-block w-16 rounded text-center"
+                              "inline-block w-16 rounded text-center py-0.5"
                             )}
                           >
                             {getAirlineTransferRate({
