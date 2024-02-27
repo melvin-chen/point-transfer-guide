@@ -17,7 +17,9 @@ const BankDisplayNames = {
 const rowClasses = (index: number) =>
   twJoin(
     "grid grid-cols-6 px-2 py-3",
-    index % 2 === 0 ? "bg-slate-100" : "bg-white"
+    index % 2 === 0
+      ? "bg-slate-100 dark:bg-slate-800"
+      : "bg-white dark:bg-slate-900"
   );
 
 export default function App() {
@@ -81,13 +83,14 @@ export default function App() {
   return (
     <div
       className={twJoin(
-        "p-4 lg:px-20 lg:py-8",
+        "p-4 lg:px-20 lg:py-8 dark:bg-slate-900 dark:text-white",
         selectedAirline && "overflow-hidden"
       )}
     >
+      <h1 className="text-3xl mb-4 font-bold">Transfer Point Matrix</h1>
       <div className="relative w-full">
         <input
-          className="w-full border rounded-lg p-3 peer"
+          className="w-full border rounded-lg p-3 peer dark:bg-slate-900"
           id="airline"
           type="text"
           value={airlineInput}
@@ -95,10 +98,10 @@ export default function App() {
         />
         <label
           className={twJoin(
-            "absolute flex items-center left-1.5 px-1.5 transition-all",
+            "absolute flex items-center left-1.5 px-1.5 transition-all dark:bg-slate-900",
             airlineInput
-              ? "w-auto h-auto -top-3 text-sm bg-white"
-              : "top-3.5 peer-focus:-top-3 peer-focus:bg-white"
+              ? "w-auto h-auto -top-3 text-sm bg-white dark:bg-slate-900"
+              : "top-3.5 peer-focus:-top-3 peer-focus:bg-white  dark:peer-focus:bg-slate-900"
           )}
           htmlFor="airline"
         >
@@ -106,7 +109,7 @@ export default function App() {
         </label>
 
         {airlineInput && (
-          <div className="z-10 absolute w-full p-3 mt-2 rounded-lg bg-white shadow-lg flex gap-4">
+          <div className="z-10 absolute w-full p-3 mt-2 rounded-lg bg-white dark:bg-slate-700 shadow-lg flex gap-4">
             {transferrableData
               .filter((airline) =>
                 airline.name.toLowerCase().includes(airlineInput.toLowerCase())
@@ -141,20 +144,20 @@ export default function App() {
           <label htmlFor="isBankFilterAnd" className="flex items-stretch group">
             <span
               className={twJoin(
-                "block rounded-l-lg border-2 border-r-0 border-blue-200 py-2 px-3 transition-all",
+                "block rounded-l-lg border-2 border-r-0 border-blue-200 dark:border-slate-600 py-2 px-3 transition-all",
                 isBankFilterAnd
-                  ? "group-hover:bg-blue-100"
-                  : "bg-blue-500 text-white border-blue-500"
+                  ? "group-hover:bg-blue-100  dark:group-hover:border-slate-700 dark:group-hover:bg-slate-100/10"
+                  : "bg-blue-500 text-white border-blue-500 dark:border-slate-500 dark:bg-slate-500"
               )}
             >
               OR
             </span>
             <span
               className={twJoin(
-                "block rounded-r-lg border-2 border-l-0 border-blue-200 py-2 px-3 transition-all",
+                "block rounded-r-lg border-2 border-l-0 border-blue-200 dark:border-slate-600 py-2 px-3 transition-all",
                 isBankFilterAnd
-                  ? "bg-blue-500 text-white border-blue-500"
-                  : "group-hover:bg-blue-100"
+                  ? "bg-blue-500 text-white border-blue-500 dark:border-slate-500 dark:bg-slate-500"
+                  : "group-hover:bg-blue-100 dark:group-hover:border-slate-700 dark:group-hover:bg-slate-100/10"
               )}
             >
               AND
@@ -181,7 +184,7 @@ export default function App() {
               />
               <label
                 htmlFor={bankName}
-                className="block p-2 rounded-lg border-2 border-blue-200 hover:border-blue-500 hover:bg-blue-100 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white transition-all"
+                className="block p-2 rounded-lg border-2 border-blue-200 hover:border-blue-500 hover:bg-blue-100 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white transition-all dark:border-slate-600 dark:hover:border-slate-700 dark:hover:bg-slate-100/10 dark:peer-checked:border-slate-500 dark:peer-checked:bg-slate-500"
               >
                 {BankDisplayNames[bankName]}
               </label>
@@ -200,7 +203,7 @@ export default function App() {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="grid grid-cols-6 py-2 bg-white border-b-2">
+          <tr className="grid grid-cols-6 py-2 bg-white dark:bg-slate-900 border-b-2 dark:border-b-slate-700">
             <th className="text-left">Airline</th>
             <th>Chase</th>
             <th>American Express</th>
@@ -245,7 +248,7 @@ export default function App() {
           )}
         />
         {selectedAirline && (
-          <div className="w-4/5 bg-white my-12 rounded-3xl relative p-8 overflow-scroll">
+          <div className="w-4/5 bg-white dark:bg-slate-800 my-12 rounded-3xl relative p-8 overflow-scroll">
             <button
               className="absolute p-3 right-8 top-4 text-red-500 hover:text-red-700 transition-all"
               onClick={() => setSelectedAirline(undefined)}
@@ -338,7 +341,7 @@ export default function App() {
                   </span>
                   <div className="flex flex-wrap gap-3">
                     {selectedAirlineAlliancePartners.map((airline) => (
-                      <div className="p-3 rounded-xl bg-slate-50">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900">
                         {airline.flag} {airline.name}
                       </div>
                     ))}
