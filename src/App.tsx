@@ -3,6 +3,7 @@ import { transferrableData } from "./data";
 import "./styles.css";
 import { Airline, Alliance, Bank } from "./types";
 import { twJoin } from "tailwind-merge";
+import { getAirlineTransferRate, getBankTransferBgColor } from "./helpers";
 
 const banks = Object.keys(Bank) as (keyof typeof Bank)[];
 
@@ -35,7 +36,11 @@ export default function App() {
         ? transferrableData.filter((airline) =>
             isBankFilterAnd
               ? selectedBanks.every((bank) =>
-                  airline.transferrableFrom.includes(bank)
+                  airline.transferrableFrom.some((transfer) =>
+                    typeof transfer === "string"
+                      ? transfer === bank
+                      : transfer.bank === bank
+                  )
                 )
               : airline.transferrableFrom.some((bank) =>
                   typeof bank === "string"
@@ -98,7 +103,7 @@ export default function App() {
         />
         <label
           className={twJoin(
-            "absolute flex items-center left-1.5 px-1.5 transition-all dark:bg-slate-900",
+            "absolute flex items-center left-1.5 px-1.5 transition-all dark:bg-slate-900 cursor-text",
             airlineInput
               ? "w-auto h-auto -top-3 text-sm bg-white dark:bg-slate-900"
               : "top-3.5 peer-focus:-top-3 peer-focus:bg-white  dark:peer-focus:bg-slate-900"
@@ -224,9 +229,18 @@ export default function App() {
 
               {banks.map((bank) => (
                 <td className="text-center" key={airline.id + bank}>
-                  {airline.transferrableFrom.includes(bank as Bank)
-                    ? "✅"
-                    : "❌"}
+                  <span
+                    className={twJoin(
+                      airline.transferrableFrom.find((transfer) =>
+                        typeof transfer === "string"
+                          ? transfer === bank
+                          : transfer.bank === bank
+                      ) && getBankTransferBgColor(bank as Bank),
+                      "inline-block w-16 rounded"
+                    )}
+                  >
+                    {getAirlineTransferRate({ airline, bank: bank as Bank })}
+                  </span>
                 </td>
               ))}
             </tr>
@@ -272,23 +286,33 @@ export default function App() {
             <div className={rowClasses(0)}>
               <span>🔁 Direct transfers</span>
               {banks.map((bank) => (
-                <span className="text-center" key={selectedAirline.id + bank}>
-                  {selectedAirline.transferrableFrom.includes(bank as Bank)
-                    ? "✅"
-                    : "❌"}
-                </span>
+                <div className="text-center">
+                  <span
+                    className={twJoin(
+                      selectedAirline.transferrableFrom.find((transfer) =>
+                        typeof transfer === "string"
+                          ? transfer === bank
+                          : transfer.bank === bank
+                      ) && getBankTransferBgColor(bank as Bank),
+                      "inline-block w-16 rounded text-center"
+                    )}
+                  >
+                    {getAirlineTransferRate({
+                      airline: selectedAirline,
+                      bank: bank as Bank,
+                    })}
+                  </span>
+                </div>
               ))}
             </div>
 
             <div>
               {selectedAirline.alliance === Alliance.NonAlliance ? (
-                <span className="text-lg font-semibold block my-4">
-                  Not in an alliance
-                </span>
+                <span className="block my-4">Not in an alliance</span>
               ) : (
                 <>
                   <span className="text-lg font-semibold block my-4">
-                    Alliance Partners:
+                    Alliance Partners ({selectedAirline.alliance}):
                   </span>
                   {selectedAirlineAlliancePartnersWithTransferPartners?.map(
                     (airline, index) => (
@@ -297,11 +321,23 @@ export default function App() {
                           {airline.flag} {airline.name}
                         </span>
                         {banks.map((bank) => (
-                          <span className="text-center" key={airline.id + bank}>
-                            {airline.transferrableFrom.includes(bank as Bank)
-                              ? "✅"
-                              : "❌"}
-                          </span>
+                          <div className="text-center">
+                            <span
+                              className={twJoin(
+                                airline.transferrableFrom.find((transfer) =>
+                                  typeof transfer === "string"
+                                    ? transfer === bank
+                                    : transfer.bank === bank
+                                ) && getBankTransferBgColor(bank as Bank),
+                                "inline-block w-16 rounded text-center"
+                              )}
+                            >
+                              {getAirlineTransferRate({
+                                airline,
+                                bank: bank as Bank,
+                              })}
+                            </span>
+                          </div>
                         ))}
                       </div>
                     )
@@ -322,11 +358,23 @@ export default function App() {
                         {airline.flag} {airline.name}
                       </span>
                       {banks.map((bank) => (
-                        <span className="text-center" key={airline.id + bank}>
-                          {airline.transferrableFrom.includes(bank as Bank)
-                            ? "✅"
-                            : "❌"}
-                        </span>
+                        <div className="text-center">
+                          <span
+                            className={twJoin(
+                              airline.transferrableFrom.find((transfer) =>
+                                typeof transfer === "string"
+                                  ? transfer === bank
+                                  : transfer.bank === bank
+                              ) && getBankTransferBgColor(bank as Bank),
+                              "inline-block w-16 rounded text-center"
+                            )}
+                          >
+                            {getAirlineTransferRate({
+                              airline,
+                              bank: bank as Bank,
+                            })}
+                          </span>
+                        </div>
                       ))}
                     </div>
                   ))}

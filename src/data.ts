@@ -79,7 +79,7 @@ export const transferrableData: Airline[] = [
     name: "EVA Air",
     alliance: Alliance.StarAlliance,
     alsoBookable: [],
-    transferrableFrom: [Bank.Citi, Bank.CapitalOne],
+    transferrableFrom: [Bank.Citi, { bank: Bank.CapitalOne, rate: "2:1.5" }],
     flag: "🇹🇼",
   },
   {
@@ -138,7 +138,11 @@ export const transferrableData: Airline[] = [
     name: "AeroMexico",
     alliance: Alliance.Skyteam,
     alsoBookable: [AirlineId.Gol, AirlineId.ElAl],
-    transferrableFrom: [Bank.AmericanExpress, Bank.Citi, Bank.CapitalOne],
+    transferrableFrom: [
+      { bank: Bank.AmericanExpress, rate: "1:1.6" },
+      Bank.Citi,
+      Bank.CapitalOne,
+    ],
     flag: "🇲🇽",
   },
   {
@@ -380,7 +384,11 @@ export const transferrableData: Airline[] = [
     name: "JetBlue",
     alliance: Alliance.NonAlliance,
     alsoBookable: [AirlineId.Hawaiian, AirlineId.AerLingus],
-    transferrableFrom: [Bank.Chase, Bank.AmericanExpress, Bank.Citi],
+    transferrableFrom: [
+      Bank.Chase,
+      { bank: Bank.AmericanExpress, rate: "5:4" },
+      Bank.Citi,
+    ],
     flag: "🇺🇸",
   },
   {
@@ -638,8 +646,8 @@ export const transferrableData: Airline[] = [
     flag: "🇲🇦",
   },
   {
-    id: AirlineId.RoyalJordinian,
-    name: "Malaysian Airlines",
+    id: AirlineId.RoyalJordanian,
+    name: "Royal Jordanian",
     alliance: Alliance.OneWorld,
     alsoBookable: [],
     transferrableFrom: [],
@@ -652,5 +660,38 @@ export const transferrableData: Airline[] = [
     alsoBookable: [],
     transferrableFrom: [],
     flag: "🇱🇰",
+  },
+
+  {
+    id: AirlineId.Condor,
+    name: "Condor",
+    alliance: Alliance.NonAlliance,
+    alsoBookable: [],
+    transferrableFrom: [],
+    flag: "🇩🇪",
+  },
+  {
+    id: AirlineId.ElAl,
+    name: "El Al",
+    alliance: Alliance.NonAlliance,
+    alsoBookable: [],
+    transferrableFrom: [],
+    flag: "🇮🇱",
+  },
+  {
+    id: AirlineId.Gol,
+    name: "GOL",
+    alliance: Alliance.NonAlliance,
+    alsoBookable: [],
+    transferrableFrom: [],
+    flag: "🇧🇷",
+  },
+  {
+    id: AirlineId.WestJet,
+    name: "WestJet",
+    alliance: Alliance.NonAlliance,
+    alsoBookable: [],
+    transferrableFrom: [],
+    flag: "🇨🇦",
   },
 ];

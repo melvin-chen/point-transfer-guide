@@ -66,7 +66,7 @@ export enum AirlineId {
   XiamenAir = "mf",
   MalaysiaAirlines = "mh",
   RoyalAirMaroc = "at",
-  RoyalJordinian = "rj",
+  RoyalJordanian = "rj",
   SriLankanAirlines = "ul",
   Condor = "de",
   ElAl = "ly",
@@ -94,6 +94,6 @@ export type Airline = {
   name: string;
   alliance: Alliance;
   alsoBookable: AirlineId[];
-  transferrableFrom: (Bank | { bank: Bank; rate: number })[];
+  transferrableFrom: (Bank | { bank: Bank; rate: string })[];
   flag?: string;
 };
