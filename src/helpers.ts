@@ -24,15 +24,15 @@ export const getAirlineTransferRate = ({
 export const getBankTransferBgColor = (bank: Bank) => {
   switch (bank) {
     case Bank.Chase:
-      return "bg-blue-200";
+      return "bg-blue-200 dark:bg-blue-800";
     case Bank.AmericanExpress:
-      return "bg-amber-100";
+      return "bg-amber-100 dark:bg-amber-800";
     case Bank.Citi:
-      return "bg-red-200";
+      return "bg-red-200 dark:bg-red-800";
     case Bank.CapitalOne:
-      return "bg-purple-200";
+      return "bg-purple-200 dark:bg-purple-800";
     case Bank.Bilt:
-      return "bg-zinc-200";
+      return "bg-zinc-200 dark:bg-zinc-500";
   }
 };
 

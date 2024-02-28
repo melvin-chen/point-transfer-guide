@@ -75,7 +75,7 @@ export const AirlineModal = ({
             {selectedAirline.flag} {selectedAirline.name}
           </span>
 
-          <div className={rowClasses(1)}>
+          <div className="grid grid-cols-6 px-2 py-3 bg-white dark:bg-slate-800">
             <span />
             {banks.map((bank) => (
               <span className="text-center font-semibold" key={bank}>

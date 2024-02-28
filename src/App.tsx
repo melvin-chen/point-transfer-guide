@@ -38,7 +38,7 @@ export default function App() {
   return (
     <div
       className={twJoin(
-        "p-4 lg:px-20 lg:py-8 dark:bg-slate-900 dark:text-white",
+        "p-4 lg:px-20 lg:py-8 dark:bg-slate-900 dark:text-slate-100",
         selectedAirline && "overflow-hidden"
       )}
     >
