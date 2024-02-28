@@ -1,3 +1,4 @@
+import { twJoin } from "tailwind-merge";
 import { Airline, Bank } from "./types";
 
 export const getAirlineTransferRate = ({
@@ -34,3 +35,11 @@ export const getBankTransferBgColor = (bank: Bank) => {
       return "bg-zinc-200";
   }
 };
+
+export const rowClasses = (index: number) =>
+  twJoin(
+    "grid grid-cols-6 px-2 py-3",
+    index % 2 === 0
+      ? "bg-slate-100 dark:bg-slate-800"
+      : "bg-white dark:bg-slate-900"
+  );

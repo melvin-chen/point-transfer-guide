@@ -1,27 +1,10 @@
 import { useMemo, useState } from "react";
-import { transferrableData } from "./data";
+import { BankDisplayNames, banks, transferrableData } from "./data";
 import "./styles.css";
-import { Airline, Alliance, Bank } from "./types";
+import { Airline, Bank } from "./types";
 import { twJoin } from "tailwind-merge";
-import { getAirlineTransferRate, getBankTransferBgColor } from "./helpers";
-
-const banks = Object.keys(Bank) as (keyof typeof Bank)[];
-
-const BankDisplayNames = {
-  [Bank.Chase]: "Chase",
-  [Bank.AmericanExpress]: "American Express",
-  [Bank.Citi]: "Citi",
-  [Bank.CapitalOne]: "Capital One",
-  [Bank.Bilt]: "Bilt",
-};
-
-const rowClasses = (index: number) =>
-  twJoin(
-    "grid grid-cols-6 px-2 py-3",
-    index % 2 === 0
-      ? "bg-slate-100 dark:bg-slate-800"
-      : "bg-white dark:bg-slate-900"
-  );
+import { AirlineModal } from "./components/AirlineModal";
+import { AirlineTable } from "./components/AirlineTable";
 
 export default function App() {
   const [selectedAirline, setSelectedAirline] = useState<Airline>();
@@ -51,39 +34,6 @@ export default function App() {
         : transferrableData
     ).filter((airline) => airline.transferrableFrom.length !== 0);
   }, [selectedBanks, transferrableData, isBankFilterAnd]);
-
-  const selectedAirlineAlliancePartnersWithTransferPartners = useMemo(
-    () =>
-      selectedAirline &&
-      transferrableData.filter(
-        (airline) =>
-          airline.alliance === selectedAirline.alliance &&
-          airline !== selectedAirline &&
-          airline.transferrableFrom.length !== 0
-      ),
-    [selectedAirline, transferrableData]
-  );
-  const selectedAirlineAlsoBookableThrough = useMemo(
-    () =>
-      selectedAirline &&
-      transferrableData.filter((airline) =>
-        airline.alsoBookable.some(
-          (bookableAirline) => bookableAirline === selectedAirline.id
-        )
-      ),
-    [selectedAirline, transferrableData]
-  );
-  const selectedAirlineAlliancePartners = useMemo(
-    () =>
-      selectedAirline &&
-      transferrableData.filter(
-        (airline) =>
-          airline.alliance === selectedAirline.alliance &&
-          airline !== selectedAirline &&
-          airline.transferrableFrom.length === 0
-      ),
-    [selectedAirline, transferrableData]
-  );
 
   return (
     <div
@@ -206,199 +156,26 @@ export default function App() {
         </button>
       </div>
 
-      <table className="w-full">
-        <thead className="sticky top-0">
-          <tr className="grid grid-cols-6 py-2 bg-white dark:bg-slate-900 border-b-2 dark:border-b-slate-700">
-            <th className="text-left">Airline</th>
-            <th>Chase</th>
-            <th>American Express</th>
-            <th>Citi</th>
-            <th>Capital One</th>
-            <th>Bilt</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usedData.map((airline, index) => (
-            <tr key={airline.id} className={twJoin(rowClasses(index), "")}>
-              <th
-                className="text-left hover:cursor-pointer font-normal"
-                onClick={() => setSelectedAirline(airline)}
-              >
-                {airline.flag} {airline.name}
-              </th>
-
-              {banks.map((bank) => (
-                <td className="text-center" key={airline.id + bank}>
-                  <span
-                    className={twJoin(
-                      airline.transferrableFrom.find((transfer) =>
-                        typeof transfer === "string"
-                          ? transfer === bank
-                          : transfer.bank === bank
-                      ) && getBankTransferBgColor(bank as Bank),
-                      "inline-block w-16 rounded py-0.5"
-                    )}
-                  >
-                    {getAirlineTransferRate({ airline, bank: bank as Bank })}
-                  </span>
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div
-        className={twJoin(
-          "fixed w-full h-full top-0 left-0 flex justify-center transition-all overflow-hidden",
-          selectedAirline ? "" : "pointer-events-none"
-        )}
-      >
-        <div
-          onClick={() => setSelectedAirline(undefined)}
-          className={twJoin(
-            "fixed w-full h-full top-0 left-0 flex justify-center transition-all",
-            selectedAirline ? "bg-black/40 opacity-1" : "opacity-0"
-          )}
-        />
-        {selectedAirline && (
-          <div className="w-4/5 bg-white dark:bg-slate-800 my-12 rounded-3xl relative p-8 overflow-scroll">
-            <button
-              className="absolute p-3 right-8 top-4 text-red-500 hover:text-red-700 transition-all"
-              onClick={() => setSelectedAirline(undefined)}
-            >
-              &#x2715;
-            </button>
-
-            <span className="text-2xl font-bold">
-              {selectedAirline.flag} {selectedAirline.name}
+      <div>
+        <div className="grid grid-cols-6 py-2 bg-white dark:bg-slate-900 border-b-2 dark:border-b-slate-700">
+          <span className="text-left font-semibold">Airline</span>
+          {Object.keys(BankDisplayNames).map((bank) => (
+            <span className="text-center font-semibold">
+              {BankDisplayNames[bank as keyof typeof BankDisplayNames]}
             </span>
+          ))}
+        </div>
 
-            <div className={rowClasses(1)}>
-              <span />
-              {banks.map((bank) => (
-                <span className="text-center font-semibold" key={bank}>
-                  {BankDisplayNames[bank]}
-                </span>
-              ))}
-            </div>
-
-            <div className={rowClasses(0)}>
-              <span>🔁 Direct transfers</span>
-              {banks.map((bank) => (
-                <div className="text-center">
-                  <span
-                    className={twJoin(
-                      selectedAirline.transferrableFrom.find((transfer) =>
-                        typeof transfer === "string"
-                          ? transfer === bank
-                          : transfer.bank === bank
-                      ) && getBankTransferBgColor(bank as Bank),
-                      "inline-block w-16 rounded text-center py-0.5"
-                    )}
-                  >
-                    {getAirlineTransferRate({
-                      airline: selectedAirline,
-                      bank: bank as Bank,
-                    })}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div>
-              {selectedAirline.alliance === Alliance.NonAlliance ? (
-                <span className="block my-4">Not in an alliance</span>
-              ) : (
-                <>
-                  <span className="text-lg font-semibold block my-4">
-                    Alliance partners ({selectedAirline.alliance}):
-                  </span>
-                  {selectedAirlineAlliancePartnersWithTransferPartners?.map(
-                    (airline, index) => (
-                      <div className={rowClasses(index)}>
-                        <span>
-                          {airline.flag} {airline.name}
-                        </span>
-                        {banks.map((bank) => (
-                          <div className="text-center">
-                            <span
-                              className={twJoin(
-                                airline.transferrableFrom.find((transfer) =>
-                                  typeof transfer === "string"
-                                    ? transfer === bank
-                                    : transfer.bank === bank
-                                ) && getBankTransferBgColor(bank as Bank),
-                                "inline-block w-16 rounded text-center py-0.5"
-                              )}
-                            >
-                              {getAirlineTransferRate({
-                                airline,
-                                bank: bank as Bank,
-                              })}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )
-                  )}
-                </>
-              )}
-            </div>
-
-            {selectedAirlineAlsoBookableThrough &&
-              selectedAirlineAlsoBookableThrough.length > 0 && (
-                <div>
-                  <span className="text-lg font-semibold block my-4">
-                    Can book this airline through:
-                  </span>
-                  {selectedAirlineAlsoBookableThrough.map((airline, index) => (
-                    <div className={rowClasses(index)}>
-                      <span>
-                        {airline.flag} {airline.name}
-                      </span>
-                      {banks.map((bank) => (
-                        <div className="text-center">
-                          <span
-                            className={twJoin(
-                              airline.transferrableFrom.find((transfer) =>
-                                typeof transfer === "string"
-                                  ? transfer === bank
-                                  : transfer.bank === bank
-                              ) && getBankTransferBgColor(bank as Bank),
-                              "inline-block w-16 rounded text-center py-0.5"
-                            )}
-                          >
-                            {getAirlineTransferRate({
-                              airline,
-                              bank: bank as Bank,
-                            })}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            {selectedAirline.alliance !== Alliance.NonAlliance &&
-              selectedAirlineAlliancePartners && (
-                <div>
-                  <span className="text-lg font-semibold my-4 block">
-                    Also in alliance:
-                  </span>
-                  <div className="flex flex-wrap gap-3">
-                    {selectedAirlineAlliancePartners.map((airline) => (
-                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900">
-                        {airline.flag} {airline.name}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-          </div>
-        )}
+        <AirlineTable
+          airlineList={usedData}
+          airlineClickAction={(airline: Airline) => setSelectedAirline(airline)}
+        />
       </div>
+
+      <AirlineModal
+        selectedAirline={selectedAirline}
+        closeModal={() => setSelectedAirline(undefined)}
+      />
     </div>
   );
 }

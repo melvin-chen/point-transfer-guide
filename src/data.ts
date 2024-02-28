@@ -695,3 +695,13 @@ export const transferrableData: Airline[] = [
     flag: "🇨🇦",
   },
 ];
+
+export const banks = Object.keys(Bank) as (keyof typeof Bank)[];
+
+export const BankDisplayNames = {
+  [Bank.Chase]: "Chase",
+  [Bank.AmericanExpress]: "American Express",
+  [Bank.Citi]: "Citi",
+  [Bank.CapitalOne]: "Capital One",
+  [Bank.Bilt]: "Bilt",
+};
