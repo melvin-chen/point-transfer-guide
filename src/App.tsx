@@ -175,6 +175,7 @@ export default function App() {
       <AirlineModal
         selectedAirline={selectedAirline}
         closeModal={() => setSelectedAirline(undefined)}
+        airlineClickAction={(airline: Airline) => setSelectedAirline(airline)}
       />
     </div>
   );

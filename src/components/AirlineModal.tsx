@@ -1,6 +1,5 @@
 import { twJoin } from "tailwind-merge";
 import { Airline, Alliance } from "../types";
-import { rowClasses } from "../helpers";
 import { BankDisplayNames, banks, transferrableData } from "../data";
 import { useMemo } from "react";
 import { AirlineTable, AirlineTableRow } from "./AirlineTable";
@@ -8,9 +7,11 @@ import { AirlineTable, AirlineTableRow } from "./AirlineTable";
 export const AirlineModal = ({
   selectedAirline,
   closeModal,
+  airlineClickAction,
 }: {
   selectedAirline?: Airline;
   closeModal: () => void;
+  airlineClickAction: (airline: Airline) => void;
 }) => {
   const selectedAirlineAlliancePartnersWithTransferPartners = useMemo(
     () =>
@@ -41,6 +42,15 @@ export const AirlineModal = ({
           airline.alliance === selectedAirline.alliance &&
           airline !== selectedAirline &&
           airline.transferrableFrom.length === 0
+      ),
+    [selectedAirline, transferrableData]
+  );
+
+  const selectedAirlineCanAlsoBook = useMemo(
+    () =>
+      selectedAirline?.alsoBookable &&
+      transferrableData.filter((airline) =>
+        selectedAirline.alsoBookable.includes(airline.id)
       ),
     [selectedAirline, transferrableData]
   );
@@ -96,6 +106,7 @@ export const AirlineModal = ({
             <AirlineTable
               airlineList={selectedAirlineAlliancePartnersWithTransferPartners}
               customTitle={`Alliance partners (${selectedAirline.alliance}):`}
+              airlineClickAction={airlineClickAction}
             />
           )}
 
@@ -104,6 +115,7 @@ export const AirlineModal = ({
               <AirlineTable
                 airlineList={selectedAirlineAlsoBookableThrough}
                 customTitle="Can book this airline through:"
+                airlineClickAction={airlineClickAction}
               />
             )}
 
@@ -121,6 +133,18 @@ export const AirlineModal = ({
                   ))}
                 </div>
               </div>
+            )}
+
+          {selectedAirlineCanAlsoBook &&
+            selectedAirlineCanAlsoBook.length > 0 && (
+              <>
+                <hr className="my-8" />
+                <AirlineTable
+                  airlineList={selectedAirlineCanAlsoBook}
+                  customTitle="This airline can also book:"
+                  airlineClickAction={airlineClickAction}
+                />
+              </>
             )}
         </div>
       )}
