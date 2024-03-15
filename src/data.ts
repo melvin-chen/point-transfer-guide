@@ -253,7 +253,7 @@ export const transferrableData: Airline[] = [
       AirlineId.ElAl,
       AirlineId.SingaporeAirlines,
     ],
-    transferrableFrom: [],
+    transferrableFrom: [Bank.Bilt],
     flag: "🇺🇸",
   },
   {
