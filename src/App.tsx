@@ -1,7 +1,13 @@
 import { useMemo, useState } from "react";
-import { BankDisplayNames, banks, transferrableData } from "./data";
+import {
+  AllianceDisplayNames,
+  BankDisplayNames,
+  alliances,
+  banks,
+  transferrableData,
+} from "./data";
 import "./styles.css";
-import { Airline, Bank } from "./types";
+import { Airline, Alliance, Bank } from "./types";
 import { twJoin } from "tailwind-merge";
 import { AirlineModal } from "./components/AirlineModal";
 import { AirlineTable } from "./components/AirlineTable";
@@ -9,6 +15,7 @@ import { AirlineTable } from "./components/AirlineTable";
 export default function App() {
   const [selectedAirline, setSelectedAirline] = useState<Airline>();
   const [selectedBanks, setSelectedBanks] = useState<Bank[]>([]);
+  const [selectedAlliance, setSelectedAlliance] = useState<Alliance>();
 
   const [airlineInput, setAirlineInput] = useState("");
   const [isBankFilterAnd, setIsBankFilterAnd] = useState(true);
@@ -32,8 +39,15 @@ export default function App() {
                 )
           )
         : transferrableData
-    ).filter((airline) => airline.transferrableFrom.length !== 0);
-  }, [selectedBanks, transferrableData, isBankFilterAnd]);
+    )
+      .filter(
+        (airline) =>
+          !selectedAlliance ||
+          airline.alliance ===
+            Alliance[selectedAlliance as keyof typeof Alliance]
+      )
+      .filter((airline) => airline.transferrableFrom.length !== 0);
+  }, [selectedBanks, transferrableData, isBankFilterAnd, selectedAlliance]);
 
   return (
     <div
@@ -86,7 +100,7 @@ export default function App() {
         )}
       </div>
 
-      <div className="grid grid-cols-[auto_1fr_auto] gap-4 py-4">
+      <div className="grid grid-cols-[auto_1fr_auto_auto] gap-4 py-4">
         <div>
           <input
             type="checkbox"
@@ -120,7 +134,7 @@ export default function App() {
           </label>
         </div>
 
-        <div className="flex gap-2">
+        <div className="grid grid-cols-6 gap-2 text-center">
           {banks.map((bankName) => (
             <div key={bankName}>
               <input
@@ -146,18 +160,47 @@ export default function App() {
             </div>
           ))}
         </div>
+        <div className="w-0.5 h-full block bg-slate-200" />
+
+        <div className="grid grid-cols-4 gap-2 text-center">
+          {alliances.map((alliance) => (
+            <div key={alliance}>
+              <input
+                type="checkbox"
+                id={alliance}
+                readOnly
+                checked={selectedAlliance === alliance}
+                className="hidden peer"
+                onClick={() => {
+                  selectedAlliance === alliance
+                    ? setSelectedAlliance(undefined)
+                    : setSelectedAlliance(alliance as Alliance);
+                }}
+              />
+              <label
+                htmlFor={alliance}
+                className="block p-2 rounded-lg border-2 border-blue-200 hover:border-blue-500 hover:bg-blue-100 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white transition-all dark:border-slate-600 dark:hover:border-slate-700 dark:hover:bg-slate-100/10 dark:peer-checked:border-slate-500 dark:peer-checked:bg-slate-500"
+              >
+                {AllianceDisplayNames[alliance]}
+              </label>
+            </div>
+          ))}
+        </div>
 
         <button
           onClick={() => {
             setSelectedBanks([]);
+            setSelectedAlliance(undefined);
           }}
+          className="text-left"
         >
           Clear Filters
         </button>
       </div>
 
       <div>
-        <div className="grid grid-cols-6 py-2 bg-white dark:bg-slate-900 border-b-2 dark:border-b-slate-700">
+        <div className="grid grid-cols-[24px_repeat(7,_1fr)] py-2 bg-white dark:bg-slate-900 border-b-2 dark:border-b-slate-700">
+          <span />
           <span className="text-left font-semibold">Airline</span>
           {Object.keys(BankDisplayNames).map((bank) => (
             <span className="text-center font-semibold">

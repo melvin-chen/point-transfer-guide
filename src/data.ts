@@ -63,6 +63,7 @@ export const transferrableData: Airline[] = [
       Bank.Citi,
       Bank.CapitalOne,
       Bank.Bilt,
+      Bank.WellsFargo,
     ],
     flag: "🇨🇴",
   },
@@ -176,6 +177,7 @@ export const transferrableData: Airline[] = [
       Bank.Citi,
       Bank.CapitalOne,
       Bank.Bilt,
+      Bank.WellsFargo,
     ],
     flag: "🇫🇷",
   },
@@ -197,6 +199,7 @@ export const transferrableData: Airline[] = [
       Bank.Citi,
       Bank.CapitalOne,
       Bank.Bilt,
+      Bank.WellsFargo,
     ],
     flag: "🇳🇱",
   },
@@ -311,6 +314,7 @@ export const transferrableData: Airline[] = [
       Bank.AmericanExpress,
       Bank.CapitalOne,
       Bank.Bilt,
+      Bank.WellsFargo,
     ],
     flag: "🇬🇧",
   },
@@ -319,7 +323,12 @@ export const transferrableData: Airline[] = [
     name: "Iberia",
     alliance: Alliance.OneWorld,
     alsoBookable: [AirlineId.Latam, AirlineId.ElAl],
-    transferrableFrom: [Bank.Chase, Bank.AmericanExpress, Bank.Bilt],
+    transferrableFrom: [
+      Bank.Chase,
+      Bank.AmericanExpress,
+      Bank.Bilt,
+      Bank.WellsFargo,
+    ],
     flag: "🇪🇸",
   },
 
@@ -337,7 +346,12 @@ export const transferrableData: Airline[] = [
       AirlineId.Iberia,
       AirlineId.United,
     ],
-    transferrableFrom: [Bank.Chase, Bank.AmericanExpress, Bank.Bilt],
+    transferrableFrom: [
+      Bank.Chase,
+      Bank.AmericanExpress,
+      Bank.Bilt,
+      Bank.WellsFargo,
+    ],
     flag: "🇮🇪",
   },
   {
@@ -700,8 +714,18 @@ export const banks = Object.keys(Bank) as (keyof typeof Bank)[];
 
 export const BankDisplayNames = {
   [Bank.Chase]: "Chase",
-  [Bank.AmericanExpress]: "American Express",
+  [Bank.AmericanExpress]: "AmEx",
   [Bank.Citi]: "Citi",
   [Bank.CapitalOne]: "Capital One",
   [Bank.Bilt]: "Bilt",
+  [Bank.WellsFargo]: "Wells Fargo",
+};
+
+export const alliances = Object.keys(Alliance) as (keyof typeof Alliance)[];
+
+export const AllianceDisplayNames = {
+  StarAlliance: "Star Alliance",
+  Skyteam: "SkyTeam",
+  OneWorld: "Oneworld",
+  NonAlliance: "Non-Alliance",
 };

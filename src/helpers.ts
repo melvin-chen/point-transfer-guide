@@ -24,21 +24,23 @@ export const getAirlineTransferRate = ({
 export const getBankTransferBgColor = (bank: Bank) => {
   switch (bank) {
     case Bank.Chase:
-      return "bg-blue-200 dark:bg-blue-800";
+      return "bg-indigo-200 dark:bg-indigo-800";
     case Bank.AmericanExpress:
       return "bg-amber-100 dark:bg-amber-800";
     case Bank.Citi:
-      return "bg-red-200 dark:bg-red-800";
+      return "bg-pink-200 dark:bg-pink-800";
     case Bank.CapitalOne:
-      return "bg-purple-200 dark:bg-purple-800";
+      return "bg-violet-200 dark:bg-violet-800";
     case Bank.Bilt:
       return "bg-zinc-200 dark:bg-zinc-500";
+    case Bank.WellsFargo:
+      return "bg-red-100 dark:bg-red-500";
   }
 };
 
 export const rowClasses = (index: number) =>
   twJoin(
-    "grid grid-cols-6 px-2 py-3",
+    "grid grid-cols-[auto_repeat(7,_1fr)] gap-2 items-center px-2 py-3",
     index % 2 === 0
       ? "bg-slate-100 dark:bg-slate-800"
       : "bg-white dark:bg-slate-900"

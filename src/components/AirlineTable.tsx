@@ -4,8 +4,9 @@ import {
   getBankTransferBgColor,
   rowClasses,
 } from "../helpers";
-import { Airline, Bank } from "../types";
+import { Airline, Alliance, Bank } from "../types";
 import { banks } from "../data";
+import { Oneworld, Skyteam, StarAlliance } from "../icons/alliances";
 
 export const AirlineTable = ({
   airlineList,
@@ -44,8 +45,21 @@ export const AirlineTableRow = ({
   airlineClickAction?: (airline: Airline) => void;
 }) => {
   const TitleComponent = airlineClickAction ? "button" : "span";
+  const AllianceIcon = () => {
+    switch (airline.alliance) {
+      case Alliance.StarAlliance:
+        return <StarAlliance />;
+      case Alliance.Skyteam:
+        return <Skyteam />;
+      case Alliance.OneWorld:
+        return <Oneworld />;
+    }
+  };
   return (
     <div className={rowClasses(index)}>
+      <div className="w-4">
+        <AllianceIcon />
+      </div>
       <TitleComponent
         onClick={() => airlineClickAction && airlineClickAction(airline)}
         className={

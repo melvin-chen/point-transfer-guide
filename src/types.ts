@@ -87,6 +87,7 @@ export enum Bank {
   Citi = "Citi",
   CapitalOne = "CapitalOne",
   Bilt = "Bilt",
+  WellsFargo = "WellsFargo",
 }
 
 export type Airline = {
