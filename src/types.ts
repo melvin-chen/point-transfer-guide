@@ -72,6 +72,7 @@ export enum AirlineId {
   ElAl = "ly",
   Gol = "g3",
   WestJet = "ws",
+  Starlux = 'jx'
 }
 
 export enum Alliance {

@@ -255,6 +255,7 @@ export const transferrableData: Airline[] = [
       AirlineId.Latam,
       AirlineId.ElAl,
       AirlineId.SingaporeAirlines,
+      AirlineId.Starlux,
     ],
     transferrableFrom: [Bank.Bilt],
     flag: "🇺🇸",
@@ -707,6 +708,14 @@ export const transferrableData: Airline[] = [
     alsoBookable: [],
     transferrableFrom: [],
     flag: "🇨🇦",
+  },
+  {
+    id: AirlineId.Starlux,
+    name: "Starlux",
+    alliance: Alliance.NonAlliance,
+    alsoBookable: [],
+    transferrableFrom: [],
+    flag: "🇹🇼",
   },
 ];
 
