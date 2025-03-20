@@ -403,6 +403,7 @@ export const transferrableData: Airline[] = [
       Bank.Chase,
       { bank: Bank.AmericanExpress, rate: "5:4" },
       Bank.Citi,
+      { bank: Bank.CapitalOne, rate: "5:3" },
     ],
     flag: "🇺🇸",
   },
